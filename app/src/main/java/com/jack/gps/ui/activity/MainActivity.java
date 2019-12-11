@@ -6,15 +6,18 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +40,9 @@ import com.jack.gps.ui.base.BaseActivity;
 import com.jack.gps.ui.db.Constant;
 import com.wuxiaosu.widget.SettingLabelView;
 import com.wuxiaosu.widget.utils.PropertiesUtils;
+
+import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -77,7 +83,15 @@ public class MainActivity extends BaseActivity {
         } else {
             initView();
         }
+
+        LocationManager locMgr = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        List<String> list = locMgr.getAllProviders();
+        for(String c : list) {
+            Log.e("------------","LocationManager provider:" + c);
+        }
+
     }
+
 
 
     private void initView() {

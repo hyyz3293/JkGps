@@ -76,7 +76,7 @@
             android:value="Gps-模拟" />
         <meta-data
             android:name="xposedminversion"
-            android:value="54" />
+            android:value="30" />
         <meta-data
             android:name="TencentMapSDK"
             android:value="${TencentMapKey}" />

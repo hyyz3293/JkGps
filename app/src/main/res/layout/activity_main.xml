@@ -20,6 +20,7 @@
 
             <com.wuxiaosu.widget.SettingLabelView
                 android:id="@+id/slv_hide_icon"
+                android:visibility="gone"
                 style="@style/SettingLayout"
                 app:external_path="@string/external_path"
                 app:is_external="true"
@@ -192,6 +193,7 @@
 
             <com.wuxiaosu.widget.SettingLabelView
                 style="@style/SettingLayout"
+                android:visibility="gone"
                 android:background="@color/white"
                 app:contact_view="@id/rl_step"
                 app:external_path="@string/external_path"
@@ -227,6 +229,7 @@
             </RadioGroup>
 
             <com.wuxiaosu.widget.SettingLabelView
+                android:visibility="gone"
                 style="@style/SettingLayout"
                 app:external_path="@string/external_path"
                 app:is_external="true"
@@ -235,6 +238,7 @@
 
             <com.wuxiaosu.widget.SettingLabelView
                 style="@style/SettingLayout"
+                android:visibility="gone"
                 app:external_path="@string/external_path"
                 app:is_external="true"
                 app:label_text="修改首页菜单"
@@ -243,6 +247,7 @@
 
             <com.wuxiaosu.widget.SettingLabelView
                 style="@style/SettingLayout"
+                android:visibility="gone"
                 app:external_path="@string/external_path"
                 app:is_external="true"
                 app:label_text="极简模式"
@@ -251,6 +256,7 @@
 
             <com.wuxiaosu.widget.SettingLabelView
                 style="@style/SettingLayout"
+                android:visibility="gone"
                 app:external_path="@string/external_path"
                 app:is_external="true"
                 app:label_text="微信登录自动确认"

@@ -126,7 +126,7 @@ public class Main implements IXposedHookLoadPackage {
 
     private void handleHook(ClassLoader classLoader, String versionName) {
         ApiFactory.initApi(versionName);
-        //TencentLocationManagerHook.hook(classLoader);
+        TencentLocationManagerHook.hook(classLoader);
         EmojiGameHook.getInstance().init(classLoader, versionName);
         WalletHook.getInstance().init(classLoader, versionName);
         LauncherUIHook.getInstance().init(classLoader, versionName);
