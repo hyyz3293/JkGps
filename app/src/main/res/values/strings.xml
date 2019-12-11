@@ -1,3 +1,27 @@
 <resources>
-    <string name="app_name">JkGps</string>
+    <string name="app_name">AAAAJkGps</string>
+
+
+    <string name="pre_key_fake_location">fake_location</string>
+    <string name="pre_key_latitude">latitude</string>
+    <string name="pre_key_longitude">longitude</string>
+    <string name="pre_key_hide_icon">hide_icon</string>
+    <string name="pre_key_fake_money">fake_money</string>
+    <string name="pre_key_money">money</string>
+    <string name="pre_key_fake_dice">fake_dice</string>
+    <string name="pre_key_fake_step">fake_step</string>
+    <string name="pre_key_step">step</string>
+    <string name="pre_key_fake_morra">fake_morra</string>
+    <string name="pre_key_morra">morra</string>
+    <string name="pre_key_dice">dice</string>
+    <string name="pre_key_disable_revoke">disable_revoke</string>
+    <string name="pre_key_only_show_chat">only_show_chat</string>
+    <string name="pre_key_fake_launcher_menu">fake_launcher_menu</string>
+    <string name="pre_key_pc_auto_login">pc_auto_login</string>
+
+
+    <string name="external_path">wechathelper</string>
+    <string name="action_search">搜索</string>
+    <string name="action_about">关于</string>
+    <string name="app_description">微信辅助</string>
 </resources>
