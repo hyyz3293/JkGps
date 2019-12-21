@@ -17,6 +17,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,11 +39,13 @@ import com.jack.gps.BuildConfig;
 import com.jack.gps.R;
 import com.jack.gps.ui.base.BaseActivity;
 import com.jack.gps.ui.db.Constant;
+import com.jack.gps.ui.db.test.EptData;
+import com.taobao.android.dexposed.utility.Logger;
 import com.wuxiaosu.widget.SettingLabelView;
 import com.wuxiaosu.widget.utils.PropertiesUtils;
 
+import java.io.File;
 import java.util.List;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -90,6 +93,11 @@ public class MainActivity extends BaseActivity {
             Log.e("------------","LocationManager provider:" + c);
         }
 
+        if (isSuEnable()){
+            Log.e("axxxx", "123");
+        } else {
+            Log.e("axxxx", "321");
+        }
     }
 
 
@@ -109,6 +117,18 @@ public class MainActivity extends BaseActivity {
                 hideLauncherIcon(isChecked);
             }
         });
+
+        String ax = "24828447e8152d152643087a97790ab55b5cb4a00d9e52dce25ba65073e1fe9b7139d88a8fba2af6dab1d93978fb53e94156bab137110471d292f03c4b0818dffb8e4630e560f98785a0e27efcff01797e04a0b55ee9e72bbc5b64832dd2f321ff2bf9a8ca284356778b220fb960579c9a4ac7de071eb1f34ca179d90afd3b6772f8b2388c191106fae39850d9a2148207e5bae907933e5bd0ea49bb7e0bfd91c4ce381c705fcfeb4753d04de2b46ec750d7487c76cc291afcc4f6da6a765e43b835ccf182760ac99b7c51073df6d01378390671ec02283825da74b52e55ce13b2ea7431cb3adf890edf2726bcaccdb8f2506dfe3bf8eb5c76a875ffe51d5060b68b5a9b1a91925d1c298d58ca2239fc63693e88759ba417717f070249b4d1c16450f6fd738acb808bf1d03c2065dcb8443a74b518f2694aa7acf4ad0fea577e6cbf667f8b845439eac739c487f224cb8a7098f007ba83c3cd8fe9da59be02341f3ec35bcfa87ca68b6d4635b4b69b723bbb7a972c6629949f9a12dabc6c56c01b7a9932538746488f22dcd45a34c939fd2f89e15cc4b4c3ab689f2f2fa081c4";
+
+        //base64解码
+        //base64解码
+
+        EptData eptData = new EptData();
+
+        String str2 = eptData.decrypt3(ax);
+        Log.e("------------", str2 + "");
+
+
     }
 
     private void showPermissionDialog() {
@@ -275,5 +295,27 @@ public class MainActivity extends BaseActivity {
         } else {
             this.finish();
         }
+    }
+
+    /**
+     * 是否存在su命令，并且有执行权限
+     *
+     * @return 存在su命令，并且有执行权限返回true
+     */
+    public static boolean isSuEnable() {
+        File file = null;
+        String[] paths = {"/system/bin/", "/system/xbin/", "/system/sbin/", "/sbin/", "/vendor/bin/", "/su/bin/"};
+        try {
+            for (String path : paths) {
+                file = new File(path + "su");
+                if (file.exists() && file.canExecute()) {
+                    Log.i("1111111", "find su in : " + path);
+                    return true;
+                }
+            }
+        } catch (Exception x) {
+            x.printStackTrace();
+        }
+        return false;
     }
 }

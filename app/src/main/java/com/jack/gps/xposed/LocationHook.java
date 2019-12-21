@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.telephony.CellIdentityCdma;
 import android.telephony.CellIdentityGsm;
@@ -50,7 +51,7 @@ public class LocationHook {
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         GsmCellLocation gsmCellLocation = new GsmCellLocation();
                         gsmCellLocation.setLacAndCid(lac, cid);
-                       param.setResult(gsmCellLocation);
+                        param.setResult(gsmCellLocation);
                        // param.setResult(null);
                         XposedBridge.log("onCellLocationChanged");
                     }
@@ -201,19 +202,30 @@ public class LocationHook {
         XposedHelpers.findAndHookMethod(LocationManager.class, "getLastKnownLocation", String.class, new XC_MethodHook() {
             @Override
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                Location location = new Location(LocationManager.GPS_PROVIDER);
+                //Location location = new Location(LocationManager.GPS_PROVIDER);
                 XSharedPreferences xsp =new XSharedPreferences("com.markypq.gpshook","markypq");
                 double latitude = Double.valueOf(xsp.getString("lan"," 117.536246"))+ (double) new Random().nextInt(1000) / 1000000  ;
                 double longtitude = Double.valueOf(xsp.getString("lon","36.681752"))+ (double) new Random().nextInt(1000) / 1000000  ;
-                location.setLatitude(latitude);
-                location.setLongitude(longtitude);
-                location.setAccuracy(Float.valueOf(xsp.getString("acc","1050")));
-                location.setTime(System.currentTimeMillis());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    location.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+                //location.setLatitude(latitude);
+                //location.setLongitude(longtitude);
+
+                Location loc = new Location("gps");
+                loc.setAccuracy(2.0F);
+                loc.setAltitude(55.0D);
+                loc.setBearing(1.0F);
+                Bundle bundle = new Bundle();
+                bundle.putInt("satellites", 7);
+                loc.setExtras(bundle);
+
+                loc.setLatitude(latitude);
+                loc.setLongitude(longtitude);
+
+                loc.setTime(System.currentTimeMillis());
+                if (Build.VERSION.SDK_INT >= 17) {
+                    loc.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
                 }
                 XposedBridge.log("getLastKnownLocation");
-                param.setResult(location);
+                param.setResult(loc);
             }
         });
 

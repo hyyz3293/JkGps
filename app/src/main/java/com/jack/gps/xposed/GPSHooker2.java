@@ -11,6 +11,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
@@ -136,18 +139,32 @@ public class GPSHooker2 implements IXposedHookLoadPackage{
                     try {
                         if (m != null) {
                             Object[] args = new Object[1];
-                            Location l = new Location(LocationManager.GPS_PROVIDER);
+                            //Location l = new Location(LocationManager.GPS_PROVIDER);
 
                             String latitude = PropertiesUtils.getValue(Constant.PRO_FILE, "latitude", "39.908860");
                             String longitude = PropertiesUtils.getValue(Constant.PRO_FILE, "longitude", "116.397390");
 
                             double la = Double.valueOf(latitude);
                             double lo = Double.valueOf(longitude);
-                            l.setLatitude(la);
-                            l.setLongitude(lo);
+
+                            Location loc = new Location("gps");
+                            loc.setAccuracy(2.0F);
+                            loc.setAltitude(55.0D);
+                            loc.setBearing(1.0F);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("satellites", 7);
+                            loc.setExtras(bundle);
+
+                            loc.setLatitude(la);
+                            loc.setLongitude(lo);
+
+                            loc.setTime(System.currentTimeMillis());
+                            if (Build.VERSION.SDK_INT >= 17) {
+                                loc.setElapsedRealtimeNanos(SystemClock.elapsedRealtimeNanos());
+                            }
 
 
-                            args[0] = l;
+                            args[0] = loc;
                             m.invoke(ll, args);
                             XposedBridge.log("fake location: " + la + ", " + lo);
                         }

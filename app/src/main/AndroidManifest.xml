@@ -77,9 +77,9 @@
         <meta-data
             android:name="xposedminversion"
             android:value="30" />
-        <meta-data
-            android:name="TencentMapSDK"
-            android:value="${TencentMapKey}" />
+<!--        <meta-data-->
+<!--            android:name="TencentMapSDK"-->
+<!--            android:value="${TencentMapKey}" />-->
     </application>
 
 </manifest>
