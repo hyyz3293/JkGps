@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
+import com.jack.gps.xposed.http.HttpHook;
+
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -24,10 +26,18 @@ public class Sqlite3Xposed implements IXposedHookLoadPackage {
         }
         final String packageName = lpparam.packageName;
         final String processName = lpparam.processName;
+
+
+        try {
+            XposedBridge.log("---------------------- http ----------------------start");
+            HttpHook.initAllHooks(lpparam);
+        }catch (Throwable e) {
+            e.printStackTrace();
+            XposedBridge.log(e);
+            XposedBridge.log("---------------------- http ---------------------- error");
+        }
+
         if (packageName.equals(RK_PACKAGE)) {
-
-
-
 
             try {
                 XposedHelpers.findAndHookMethod("com.examexp_itpm.MyWrapperProxyApplication", lpparam.classLoader,
