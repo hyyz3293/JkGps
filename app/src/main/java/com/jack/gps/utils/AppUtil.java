@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by su on 2019/8/27.
  */
@@ -39,5 +42,18 @@ public class AppUtil {
             e.printStackTrace();
         }
         return name;
+    }
+
+    /**
+     * 獲取當前時間
+     * @return
+     */
+    public static String getNewTime() {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long lt = new Long(System.currentTimeMillis());
+        Date date = new Date(lt);
+        res = simpleDateFormat.format(date);
+        return res;
     }
 }

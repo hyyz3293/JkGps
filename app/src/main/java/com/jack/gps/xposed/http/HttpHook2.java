@@ -74,7 +74,7 @@ public class HttpHook2 implements IXposedHookLoadPackage{
     private boolean NETWORK = true;
     private boolean HTTP_DATA = true;
     private boolean SOCKET_DATA = true;
-    private boolean HTTP_RESPONSE = false;
+    private boolean HTTP_RESPONSE = true;
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 
@@ -117,14 +117,20 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                         super.beforeHookedMethod(param);
                     }
                 });
-                findAndHookMethod("java.net.DatagramSocket", lpparam.classLoader, "createSocket", int.class, InetAddress.class, new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param)
-                            throws Throwable {
-                        mLog("udp监听", ((InetAddress)param.args[1]).toString()+":"+(Integer)param.args[0]);
-                        super.beforeHookedMethod(param);
-                    }
-                });
+
+                try {
+                    findAndHookMethod("java.net.DatagramSocket", lpparam.classLoader, "createSocket", int.class, InetAddress.class, new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param)
+                                throws Throwable {
+                            mLog("udp监听", ((InetAddress)param.args[1]).toString()+":"+(Integer)param.args[0]);
+                            super.beforeHookedMethod(param);
+                        }
+                    });
+                }catch (Throwable e) {
+                    mLog("udp监听-error", e.getMessage());
+                }
+
                 findAndHookMethod("java.net.DatagramSocket", lpparam.classLoader, "bind", SocketAddress.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param)
@@ -213,14 +219,19 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                     }
                 });
 
-                findAndHookMethod("java.net.Socket", lpparam.classLoader, "startupSocket", InetAddress.class, int.class, InetAddress.class, int.class, boolean.class, new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param)
-                            throws Throwable {
-                        mLog("tcp连接", ((InetAddress)param.args[0]).toString()+":"+(Integer)param.args[1]);
-                        super.beforeHookedMethod(param);
-                    }
-                });
+                try {
+                    findAndHookMethod("java.net.Socket", lpparam.classLoader, "startupSocket", InetAddress.class, int.class, InetAddress.class, int.class, boolean.class, new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param)
+                                throws Throwable {
+                            mLog("tcp连接", ((InetAddress)param.args[0]).toString()+":"+(Integer)param.args[1]);
+                            super.beforeHookedMethod(param);
+                        }
+                    });
+                }catch (Throwable e) {
+                    mLog("tcp连接-startupSocket", e.getMessage());
+                }
+
                 findAndHookMethod("java.net.Socket", lpparam.classLoader, "connect", SocketAddress.class, int.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param)
@@ -286,7 +297,7 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                     }
                 });
                 //
-                hookHttpClient(lpparam);
+                //hookHttpClient(lpparam);
 
             }//网络监控结束
         }
@@ -311,7 +322,7 @@ public class HttpHook2 implements IXposedHookLoadPackage{
         editor.putString(key, value);
         editor.commit();
     }
-
+    //org.apache.http.impl.client.AbstractHttpClient
     public void hookHttpClient(LoadPackageParam lpparam){
         findAndHookMethod("org.apache.http.impl.client.AbstractHttpClient", lpparam.classLoader,
                 "execute", HttpHost.class, HttpRequest.class, HttpContext.class, new XC_MethodHook() {
@@ -352,10 +363,10 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                                             String content = new String(data, HTTP.DEFAULT_CONTENT_CHARSET);
                                             mLog("postcontent",content);
                                         } catch (IllegalStateException e) {
-// TODO Auto-generated catch block
+                                            // TODO Auto-generated catch block
                                             e.printStackTrace();
                                         } catch (IOException e) {
-// TODO Auto-generated catch block
+                                            // TODO Auto-generated catch block
                                             e.printStackTrace();
                                         }
                                     } else if (contentType.startsWith(HTTP.DEFAULT_CONTENT_TYPE)) {
@@ -365,7 +376,7 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                                             String content = new String(data, contentType.substring(contentType.lastIndexOf("=") + 1));
                                             mLog("postcontent",content);
                                         } catch (IllegalStateException e) {
-// TODO Auto-generated catch block
+                                            // TODO Auto-generated catch block
                                             e.printStackTrace();
                                         } catch (IOException e) {
                                             e.printStackTrace();
@@ -378,10 +389,10 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                                         String content = new String(data, HTTP.DEFAULT_CONTENT_CHARSET);
                                         mLog("postcontent",content);
                                     } catch (IllegalStateException e) {
-// TODO Auto-generated catch block
+                                        // TODO Auto-generated catch block
                                         e.printStackTrace();
                                     } catch (IOException e) {
-// TODO Auto-generated catch block
+                                        // TODO Auto-generated catch block
                                         e.printStackTrace();
                                     }
                                 }
@@ -448,7 +459,7 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                 }
                 mLog("target11", "target");
             } catch (Exception e) {
-// TODO Auto-generated catch block
+                // TODO Auto-generated catch block
                 Method hookOncreateMethod;
                 try {
                     hookOncreateMethod = Application.class.getDeclaredMethod("onCreate", new Class[] {});
@@ -457,7 +468,7 @@ public class HttpHook2 implements IXposedHookLoadPackage{
                     }
                     mLog("target21", "target");
                 } catch (NoSuchMethodException e1) {
-// TODO Auto-generated catch block
+                    // TODO Auto-generated catch block
                     mLog("target3", "target");
                     e1.printStackTrace();
                 }
