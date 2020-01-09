@@ -1,9 +1,9 @@
 package com.jack.gps;
 
 import android.content.Context;
+import android.net.Uri;
 
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +20,17 @@ public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        //Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.jack.gps", appContext.getPackageName());
+        //assertEquals("com.jack.gps", appContext.getPackageName());
+
+        String str = "http://www.baidu.com:8080/wenku/jiatiao.html?id=123456&name=jack";
+        Uri url = Uri.parse(str);
+        System.out.println(url.getScheme());
+        System.out.println(url.getHost());
+        System.out.println(url.getPort());
+        System.out.println(url.getPath());
+        System.out.println(url.getQuery());
+        System.out.println(url.getQuery());
     }
 }

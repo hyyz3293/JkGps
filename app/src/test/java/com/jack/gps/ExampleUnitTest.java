@@ -1,6 +1,13 @@
 package com.jack.gps;
 
+import android.net.Uri;
+
+import com.jack.gps.xposed.ins.S;
+
 import org.junit.Test;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +19,6 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        //assertEquals(4, 2 + 2);
     }
 }

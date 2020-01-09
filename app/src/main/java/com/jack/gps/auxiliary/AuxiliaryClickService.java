@@ -20,13 +20,10 @@ import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.accessibility.AccessibilityWindowInfo;
 
-import com.jack.gps.ui.activity.MainActivity;
 import com.jack.gps.utils.AppUtil;
 
 import java.util.Iterator;
 import java.util.List;
-
-import external.org.apache.commons.lang3.StringUtils;
 
 
 /**
