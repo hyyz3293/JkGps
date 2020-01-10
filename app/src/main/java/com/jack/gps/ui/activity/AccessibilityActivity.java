@@ -136,7 +136,7 @@ public class AccessibilityActivity extends BaseActivity implements Accessibility
         public void run() {
             do {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(50);
                     Message msg = new Message();
                     msg.what = 1;  //消息(一个整型值)
                     mHandler.sendMessage(msg);// 每隔1秒发送一个msg给mHandler
@@ -159,11 +159,16 @@ public class AccessibilityActivity extends BaseActivity implements Accessibility
                     long sysTime = System.currentTimeMillis();//获取系统时间
                     String s = AppUtil.getNewTime();
                     time.setText(s); //更新时间
-                    if (sysTime >= 1578398389055l && aaa) {
+                                   //1578571199500
+                                   //1578571199000
+                                   //1578657599000
+                    if (sysTime >= 1578657599950l && aaa) {
                         aaa = false;
-                        sss();
+                        //sss();
+                        Intent intent = new Intent(BROARD_ACIOTN_CLICK);
+                        intent.putExtra("flag", 1);
+                        sendBroadcast(intent);
                     }
-
                     break;
                 default:
                     break;

@@ -38,6 +38,8 @@ public class AuxiliaryClickService extends AccessibilityService {
     private Handler mHandler;
     private Runnable mRunnable;
 
+    private int mBackNum = 0;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -139,36 +141,6 @@ public class AuxiliaryClickService extends AccessibilityService {
 
     //执行点击
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void performClickIdBack(String id) {
-        Log.i("mService", "点击执行");
-        try {
-            List<AccessibilityWindowInfo> accessList = this.getWindows();
-            if (accessList != null && accessList.size() > 0) {
-                for (int i = 0; i < accessList.size(); i++) {
-                    if (accessList.get(i) != null && accessList.get(i).getRoot() != null) {
-                        AccessibilityNodeInfo nodeInfo = accessList.get(i).getRoot();
-                        AccessibilityNodeInfo targetNodeByID = null;
-                        if (nodeInfo != null) {
-                            targetNodeByID = findNodeInfosById(nodeInfo, id);
-                            if (targetNodeByID != null && targetNodeByID.isClickable()) {
-                                if ("com.hybunion.shouyintai:id/ll_titlebar_back".equals(id)) {
-                                    targetNodeByID.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("error", e.getMessage());
-        }
-
-    }
-
-
-    //执行点击
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void performClickId(String id) {
         Log.i("mService", "点击执行");
         try {
@@ -234,8 +206,12 @@ public class AuxiliaryClickService extends AccessibilityService {
                                 if (noBuyAccess == null)
                                     targetNodeByName.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                                 else {
-                                    if (taSureBack != null)
-                                        taSureBack.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                                    if (taSureBack != null) {
+                                        if (mBackNum < 3)
+                                            taSureBack.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                                        mBackNum++;
+                                    }
+
                                 }
                             }
                         }
@@ -308,6 +284,7 @@ public class AuxiliaryClickService extends AccessibilityService {
             if (mHandler == null)
                 mHandler = new Handler();
             if (i == 1) {
+                mBackNum = 0;
                 mRunnable = () -> {
                     Log.e("模拟点击中--1", AppUtil.getNewTime());
                     performClickId("com.taobao.taobao:id/button_cart_charge");
