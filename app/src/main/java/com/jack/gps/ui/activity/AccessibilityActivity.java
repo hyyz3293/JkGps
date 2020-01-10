@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,11 +42,22 @@ public class AccessibilityActivity extends BaseActivity implements Accessibility
     LinearLayout openAccessibility;
 
 
-    @BindView(R.id.start_ax)
+    @BindView(R.id.start_taaobao)
     TextView mStartTvs;
+    @BindView(R.id.start_tamll)
+    TextView mStartTamll;
     @BindView(R.id.time)
     TextView time;
 
+    @BindView(R.id.aaa)
+    RadioGroup radioGroup;
+    @BindView(R.id.radio_tb)
+    RadioButton tb;
+    @BindView(R.id.radio_tm)
+    RadioButton tm;
+
+
+    private boolean istbtm = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,32 +71,50 @@ public class AccessibilityActivity extends BaseActivity implements Accessibility
         updateServiceStatus();
 
         new TimeThread().start(); //启动新的线程
+
+        initview();
+
+        tb.setChecked(true);
+        tm.setEnabled(false);
+    }
+
+    private void initview() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.radio_tb:
+                        istbtm = true;
+                        break;
+                    case R.id.radio_tm:
+                        istbtm = false;
+                        break;
+                }
+            }
+        });
+
+
     }
 
 
-    @OnClick({R.id.open_accessibility, R.id.start_ax})
+
+    @OnClick({R.id.open_accessibility, R.id.start_taaobao, R.id.start_tamll})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.open_accessibility:
                 openAccessibilityServiceSettings();
                 break;
-            case R.id.start_ax:
+            case R.id.start_taaobao: {
                 Intent intent = new Intent(BROARD_ACIOTN_CLICK);
                 intent.putExtra("flag", 1);
                 sendBroadcast(intent);
-                break;
+            }break;
+            case R.id.start_tamll: {
+                Intent intent = new Intent(BROARD_ACIOTN_CLICK);
+                intent.putExtra("flag", 2);
+                sendBroadcast(intent);
+            }break;
         }
-    }
-
-    private void  sss() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(BROARD_ACIOTN_CLICK);
-                intent.putExtra("flag", 1);
-                sendBroadcast(intent);
-            }
-        }, 10000);
     }
 
 
@@ -166,7 +197,13 @@ public class AccessibilityActivity extends BaseActivity implements Accessibility
                         aaa = false;
                         //sss();
                         Intent intent = new Intent(BROARD_ACIOTN_CLICK);
-                        intent.putExtra("flag", 1);
+
+                        if (istbtm) {
+                            intent.putExtra("flag", 1);
+                        } else {
+                            intent.putExtra("flag", 2);
+                        }
+
                         sendBroadcast(intent);
                     }
                     break;

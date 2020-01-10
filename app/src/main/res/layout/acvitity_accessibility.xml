@@ -9,7 +9,7 @@
         android:id="@+id/time"
         android:layout_marginBottom="20dp"
         android:text="开始"
-        android:layout_above="@+id/start_ax"
+        android:layout_above="@+id/aaa"
         android:gravity="center"
         android:textSize="16sp"
         android:textColor="@color/black"
@@ -17,16 +17,56 @@
         android:layout_height="50dp" />
 
 
-    <TextView
-        android:id="@+id/start_ax"
-        android:text="开始"
+    <RadioGroup
+        android:id="@+id/aaa"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_above="@+id/acx"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" >
+
+        <RadioButton
+            android:id="@+id/radio_tb"
+            android:text="淘宝"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:id="@+id/radio_tm"
+            android:text="天猫"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:id="@+id/acx"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:layout_above="@+id/open_accessibility"
-        android:gravity="center"
-        android:textSize="16sp"
-        android:textColor="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="50dp" >
 
+        <TextView
+            android:id="@+id/start_taaobao"
+            android:text="淘宝开始"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/start_tamll"
+            android:layout_marginLeft="50dp"
+            android:text="天猫开始"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -47,6 +87,7 @@
             android:layout_marginTop="6dp"
             android:background="@mipmap/icon_plug_start"
             android:contentDescription="T0D0" />
+
         <TextView
             android:id="@+id/layout_control_accessibility_text"
             android:layout_width="wrap_content"

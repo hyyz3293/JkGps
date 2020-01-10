@@ -38,6 +38,9 @@ public class AuxiliaryClickService extends AccessibilityService {
     private Handler mHandler;
     private Runnable mRunnable;
 
+    private Handler mHandler2;
+    private Runnable mRunnable2;
+
     private int mBackNum = 0;
 
     @Override
@@ -207,7 +210,7 @@ public class AuxiliaryClickService extends AccessibilityService {
                                     targetNodeByName.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                                 else {
                                     if (taSureBack != null) {
-                                        if (mBackNum < 3)
+                                        if (mBackNum < 2)
                                             taSureBack.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                                         mBackNum++;
                                     }
@@ -283,6 +286,8 @@ public class AuxiliaryClickService extends AccessibilityService {
             int i = intent.getIntExtra("flag", 0);
             if (mHandler == null)
                 mHandler = new Handler();
+            if (mHandler2 == null)
+                mHandler2 = new Handler();
             if (i == 1) {
                 mBackNum = 0;
                 mRunnable = () -> {
@@ -293,6 +298,16 @@ public class AuxiliaryClickService extends AccessibilityService {
                     mHandler.postDelayed(mRunnable, 50);
                 };
                 mHandler.postDelayed(mRunnable, 10);
+            } else if (i == 2) {
+                mBackNum = 0;
+                mRunnable2 = () -> {
+                    Log.e("模拟点击中--1", AppUtil.getNewTime());
+                    performClickId("com.tmall.wireless:id/button_cart_charge"); //结算
+                    performClickName("提交订单");
+                    performClickId("com.tmall.wireless:id/purchase_new_dialog_right_btn");
+                    mHandler2.postDelayed(mRunnable2, 50);
+                };
+                mHandler2.postDelayed(mRunnable2, 10);
             }
         }
     }
