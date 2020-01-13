@@ -1,9 +1,11 @@
 package com.jack.gps.xposed.taobao;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -16,6 +18,10 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class TaobaoXposed implements IXposedHookLoadPackage {
 
     private String TAOBAO = "com.taobao.taobao";
+
+    private Handler mHandlerMain;
+    private Runnable mRunnableMain;
+    private int number = 0;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
@@ -76,8 +82,77 @@ public class TaobaoXposed implements IXposedHookLoadPackage {
                                             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                                                 super.afterHookedMethod(param);
                                                 XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "成功");
+                                                Activity activity = (Activity) param.thisObject;
+                                                if (activity != null) {
+                                                    XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "activity != null");
+                                                } else {
+                                                    XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "activity == null");
+                                                }
                                             }
                                         });
+
+                                XposedHelpers.findAndHookMethod(clazz, "onResume",
+                                        new XC_MethodHook() {
+                                            @Override
+                                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                                                super.afterHookedMethod(param);
+                                                XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "成功");
+                                                Activity activity = (Activity) param.thisObject;
+                                                if (activity != null) {
+                                                    XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "activity != null");
+
+                                                    if (mHandlerMain == null) {
+                                                        mHandlerMain = new Handler();
+                                                        mRunnableMain = () -> {
+                                                            XposedBridge.log("*****  TBPurchaseActivity-------refush");
+
+
+                                                            long time = System.currentTimeMillis();
+
+                                                            if (time >= 1578916800000L && clazz.getName().equals("com.taobao.android.purchase.TBPurchaseActivity") && number < 2) {
+                                                                mHandlerMain.postDelayed(mRunnableMain,2000);
+                                                                number++;
+                                                                XposedBridge.log("*****  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx------------------------------------");
+                                                                activity.recreate();
+                                                            } else {
+                                                                mHandlerMain.postDelayed(mRunnableMain,10);
+                                                            }
+
+
+
+                                                        };
+                                                        mHandlerMain.postDelayed(mRunnableMain, 100);
+                                                    }
+                                                } else {
+                                                    XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "activity == null");
+                                                }
+                                            }
+                                        });
+
+                                try {
+                                    XposedHelpers.findAndHookMethod(clazz, "q", new XC_MethodHook() {
+                                        @Override
+                                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                                            super.afterHookedMethod(param);
+                                            XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "=========q");
+                                        }
+                                    });
+                                }catch (Throwable e) {
+                                    XposedBridge.log("refush+q" + e);
+                                }
+
+                                try {
+                                    XposedHelpers.findAndHookMethod(clazz, "q", new XC_MethodHook() {
+                                        @Override
+                                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                                            super.afterHookedMethod(param);
+                                            XposedBridge.log("hook---------TBPurchaseActivity----------------------------->" + "=========q");
+                                        }
+                                    });
+                                }catch (Throwable e) {
+                                    XposedBridge.log("refush+" + e);
+                                }
+
                             } else {
                                 //XposedBridge.log("hook---------TBMainActivity----------------------------->");
                             }
@@ -85,65 +160,6 @@ public class TaobaoXposed implements IXposedHookLoadPackage {
                             e.printStackTrace();
                             XposedBridge.log("hook------------------TBPurchaseActivity-------------------->" + "购物车--失败");
                         }
-
-
-//                        try {
-//                            if (clazz.getName().equals("com.taobao.tao.TBMainActivity")) {
-//                                XposedHelpers.findAndHookMethod(clazz, "onResume",
-//                                        new XC_MethodHook() {
-//                                    @Override
-//                                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                                        super.afterHookedMethod(param);
-//                                        XposedBridge.log("hook---------TBMainActivity----------------------------->" + "成功");
-//                                    }
-//                                });
-//                            } else {
-//                                //XposedBridge.log("hook---------TBMainActivity----------------------------->");
-//                            }
-//                        }catch (Throwable e) {
-//                            XposedBridge.log(e);
-//                            XposedBridge.log("hook-------------------------------------->" + "mian--失败");
-//                        }
-//                        try {
-//                            XposedBridge.log("hook---------HomepageFragment----------------------------->" + "start");
-//                            XposedBridge.log("*****" + clazz.toString());
-//                            if (clazz.getName().equals("com.taobao.tao.homepage.HomepageFragment")) {
-//                                XposedHelpers.findAndHookMethod(clazz, "onResume", new XC_MethodHook() {
-//                                    @Override
-//                                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                                        super.afterHookedMethod(param);
-//                                        XposedBridge.log("hook----------------HomepageFragment-----------onResume----------->" + "成功");
-//
-//                                        //com.taobao.taobao:id/dx_root
-//
-//                                        try {
-//                                            FrameLayout frameLayout = (FrameLayout) XposedHelpers.getObjectField(param.thisObject, "com.taobao.taobao:id/dx_root");
-//                                        }catch (Throwable e) {
-//                                            e.printStackTrace();
-//                                            XposedBridge.log("frameLayout----------error");
-//                                            XposedBridge.log(e);
-//                                        }
-//
-//
-//
-//
-//
-//                                    }
-//                                });
-//                                XposedHelpers.findAndHookMethod(clazz, "onAttach"
-//                                        , Context.class,
-//                                        new XC_MethodHook() {
-//                                    @Override
-//                                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                                        super.afterHookedMethod(param);
-//                                        XposedBridge.log("hook----------------HomepageFragment---onAttach------------------->" + "成功");
-//                                    }
-//                                });
-//                            }
-//                        }catch (Throwable throwable) {
-//                            XposedBridge.log(throwable);
-//                            XposedBridge.log("hook-------------------------------------->" + "HomepageFragment--失败");
-//                        }
 
                     }
                 });

@@ -292,9 +292,10 @@ public class AuxiliaryClickService extends AccessibilityService {
                 mBackNum = 0;
                 mRunnable = () -> {
                     Log.e("模拟点击中--1", AppUtil.getNewTime());
-                    performClickId("com.taobao.taobao:id/button_cart_charge");
+                    //performClickId("com.taobao.taobao:id/button_cart_charge");
                     performClickName("提交订单");
                     performClickId("com.taobao.taobao:id/purchase_new_dialog_right_btn");
+
                     mHandler.postDelayed(mRunnable, 50);
                 };
                 mHandler.postDelayed(mRunnable, 10);

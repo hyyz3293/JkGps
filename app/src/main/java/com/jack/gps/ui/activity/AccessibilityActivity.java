@@ -70,7 +70,7 @@ public class AccessibilityActivity extends BaseActivity implements Accessibility
         accessibilityManager.addAccessibilityStateChangeListener(this);
         updateServiceStatus();
 
-        new TimeThread().start(); //启动新的线程
+        //new TimeThread().start(); //启动新的线程
 
         initview();
 
